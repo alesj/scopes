@@ -1,0 +1,4 @@
+Seam Scopes - custom CDI scopes.
+* @ClusterScoped / @HAScoped
+* @MontereyScoped
+

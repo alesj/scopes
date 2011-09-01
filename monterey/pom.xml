@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <!-- Parent -->
+    <parent>
+        <groupId>org.jboss.seam.scopes</groupId>
+        <artifactId>scopes-build</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>monterey-scopes</artifactId>
+    <packaging>jar</packaging>
+    <name>JBoss Seam Scopes - Moneterey</name>
+    <url>http://www.jboss.org/capedwarf</url>
+    <description>JBoss Seam Scopes - Moneterey</description>
+
+    <dependencies>
+
+        <dependency>
+           <groupId>javax.enterprise</groupId>
+           <artifactId>cdi-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cloudsoftcorp.monterey</groupId>
+            <artifactId>com.cloudsoftcorp.monterey.embedded</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.kohsuke.metainf-services</groupId>
+            <artifactId>metainf-services</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>
