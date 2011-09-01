@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.cdi.scopes.monterey;
+package org.jboss.seam.scopes.monterey;
 
 import com.cloudsoftcorp.monterey.servicebean.access.api.MontereyNetworkEndpoint;
 import com.cloudsoftcorp.monterey.servicebean.access.api.MontereyNetworkEndpointImpl;

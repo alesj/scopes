@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.cdi.scopes.monterey;
+package org.jboss.seam.scopes.monterey;
 
 import javax.enterprise.context.spi.Context;
 import javax.enterprise.context.spi.Contextual;

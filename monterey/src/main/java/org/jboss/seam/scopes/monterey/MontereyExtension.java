@@ -20,23 +20,23 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.cdi.scopes.monterey;
+package org.jboss.seam.scopes.monterey;
 
-import javax.enterprise.context.NormalScope;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.kohsuke.MetaInfServices;
+
+import javax.enterprise.event.Observes;
+import javax.enterprise.inject.spi.AfterBeanDiscovery;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.Extension;
 
 /**
- * Monterey scoped.
+ * Monterey CDI extension.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Inherited
-@NormalScope
-@Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface MontereyScoped {
+@MetaInfServices
+public class MontereyExtension implements Extension {
+    public void registerContext(@Observes final AfterBeanDiscovery event, final BeanManager manager) {
+        event.addContext(new MontereyScopedContext(manager));
+    }
 }
