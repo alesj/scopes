@@ -22,9 +22,12 @@
 
 package org.jboss.seam.scopes.monterey;
 
-import javax.enterprise.context.spi.Context;
+import com.cloudsoftcorp.monterey.servicebean.access.api.MontereyNetworkEndpoint;
+import org.jboss.seam.scopes.common.LookupContext;
+
 import javax.enterprise.context.spi.Contextual;
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -36,27 +39,39 @@ import java.lang.annotation.Annotation;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 @Singleton
-public class MontereyScopedContext implements Context {
-    private final BeanManager manager;
+public class MontereyScopedContext extends LookupContext {
+    private MontereyNetworkEndpoint endpoint;
+    private long timeout;
 
     @Inject
     public MontereyScopedContext(BeanManager manager) {
-        this.manager = manager;
+        super(manager);
+    }
+
+    protected MontereyNetworkEndpoint getEndpoint() {
+        if (endpoint == null)
+            endpoint = lookup(MontereyNetworkEndpoint.class);
+        return endpoint;
+    }
+
+    public long getTimeout() {
+        if (timeout <= 0)
+            timeout = MontereyProvider.getTimeout();
+        return timeout;
     }
 
     public Class<? extends Annotation> getScope() {
         return MontereyScoped.class;
     }
 
+    @SuppressWarnings({"unchecked"})
     public <T> T get(Contextual<T> contextual, CreationalContext<T> creationalContext) {
-        return null;  // TODO
-    }
-
-    public <T> T get(Contextual<T> contextual) {
-        return get(contextual, null);
-    }
-
-    public boolean isActive() {
-        return true;
+        if (contextual instanceof Bean<?>) {
+            Bean<T> bean = (Bean<T>) contextual;
+            String segment = ""; // TODO
+            return (T) getEndpoint().getService(bean.getBeanClass(), segment, getTimeout());
+        } else {
+            throw new IllegalArgumentException("Can only handle beans: " + contextual);
+        }
     }
 }

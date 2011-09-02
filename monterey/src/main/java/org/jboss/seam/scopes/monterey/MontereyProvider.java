@@ -33,23 +33,24 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Monterey network provider.
+ * Monterey provider.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 @ApplicationScoped
-public class MontereyNetworkProvider {
+public class MontereyProvider {
 
-    @Produces @ApplicationScoped
+    @Produces
+    @ApplicationScoped
     public MontereyNetworkEndpoint createEndpoint() throws Exception {
-        Properties p = loadProperties();
-		MontereyNetworkEndpointImpl network = new MontereyNetworkEndpointImpl();
-		network.setManagementNodeUrl(p.getProperty("managementNodeUrl"));
-		network.setUsername(p.getProperty("username"));
-		network.setPassword(p.getProperty("password"));
-		network.setLocation(p.getProperty("location"));
-		network.setHasPrivateIp(Boolean.parseBoolean(p.getProperty("hasPrivateIp")));
-		network.start();
+        Properties p = loadProperties(getClass().getClassLoader());
+        MontereyNetworkEndpointImpl network = new MontereyNetworkEndpointImpl();
+        network.setManagementNodeUrl(p.getProperty("managementNodeUrl"));
+        network.setUsername(p.getProperty("username"));
+        network.setPassword(p.getProperty("password"));
+        network.setLocation(p.getProperty("location"));
+        network.setHasPrivateIp(Boolean.parseBoolean(p.getProperty("hasPrivateIp")));
+        network.start();
         return network;
     }
 
@@ -57,9 +58,22 @@ public class MontereyNetworkProvider {
         endpoint.shutdown();
     }
 
-    protected Properties loadProperties() throws IOException {
-        ClassLoader cl = getClass().getClassLoader();
+    static long getTimeout() {
+        try {
+            return Long.parseLong(loadProperties(MontereyProvider.class.getClassLoader()).getProperty("timeout", "5000L"));
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    protected static Properties loadProperties(ClassLoader cl) throws IOException {
+        if (cl == null)
+            throw new IllegalArgumentException("Null classloader");
+
         InputStream is = cl.getResourceAsStream("monterey.properties");
+        if (is == null)
+            throw new IllegalArgumentException("Missing monterey.properties file!");
+
         try {
             Properties properties = new Properties();
             properties.load(is);
