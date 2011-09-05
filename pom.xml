@@ -25,14 +25,23 @@
         <version.json>20090211</version.json>
         <version.org.jboss.logging>3.0.0.GA</version.org.jboss.logging>
         <version.javassist>3.14.0-GA</version.javassist>
-        <version.slf4j>1.5.10</version.slf4j>
+        <slf4j.version>1.5.10</slf4j.version>
+        <cal10n.version>0.7.2</cal10n.version>
         <version.javax.validation>1.0.0.GA</version.javax.validation>
         <version.javax.servlet>2.5</version.javax.servlet>
         <version.javax.servlet.jsp>2.1</version.javax.servlet.jsp>
         <version.org.infinispan>5.0.0.FINAL</version.org.infinispan>
         <version.monterey>3.3.0</version.monterey>
         <version.junit>4.7</version.junit>
-        <version.arquillian>1.0.0.CR1</version.arquillian>
+        <version.arquillian>1.0.0.CR4</version.arquillian>
+        <version.weld>1.1.2.Final</version.weld>
+        <arquillian.weld.version>1.0.0.CR2</arquillian.weld.version>
+        <jboss.interceptor.version>2.0.0.CR1</jboss.interceptor.version>
+        <jboss.spec.ejb.version>1.0.0.CR2</jboss.spec.ejb.version>
+        <version.el>2.2</version.el>
+        <version.jta>1.1</version.jta>
+        <version.jpa>1.0</version.jpa>
+        <version.validation>1.0.0.GA</version.validation>
         <version.metainf>1.1</version.metainf>
     </properties>
 
@@ -224,24 +233,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${version.slf4j}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-ext</artifactId>
-                <version>${version.slf4j}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-jdk14</artifactId>
-                <version>${version.slf4j}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.kohsuke.metainf-services</groupId>
                 <artifactId>metainf-services</artifactId>
                 <version>${version.metainf}</version>
@@ -269,6 +260,90 @@
                 <artifactId>arquillian-junit-container</artifactId>
                 <version>${version.arquillian}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.arquillian.container</groupId>
+                <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
+                <version>${arquillian.weld.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.weld</groupId>
+                <artifactId>weld-core</artifactId>
+                <version>${version.weld}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-ext</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-jdk14</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.cal10n</groupId>
+                <artifactId>cal10n-api</artifactId>
+                <version>${cal10n.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.interceptor</groupId>
+                <artifactId>jboss-interceptor-spi</artifactId>
+                <version>${jboss.interceptor.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.interceptor</groupId>
+                <artifactId>jboss-interceptor-core</artifactId>
+                <version>${jboss.interceptor.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.spec.javax.ejb</groupId>
+                <artifactId>jboss-ejb-api_3.1_spec</artifactId>
+                <version>${jboss.spec.ejb.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.el</groupId>
+                <artifactId>el-api</artifactId>
+                <version>${version.el}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.transaction</groupId>
+                <artifactId>jta</artifactId>
+                <version>${version.jta}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>persistence-api</artifactId>
+                <version>${version.jpa}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${version.validation}</version>
             </dependency>
 
         </dependencies>

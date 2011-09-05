@@ -2,5 +2,7 @@
 *.ipr
 *.iws
 .idea/
+target/
+common/target/
 monterey/target/
 
