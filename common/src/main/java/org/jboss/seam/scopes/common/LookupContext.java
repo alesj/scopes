@@ -25,8 +25,10 @@ package org.jboss.seam.scopes.common;
 import javax.enterprise.context.spi.Context;
 import javax.enterprise.context.spi.Contextual;
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.InjectionTarget;
+import java.lang.annotation.Annotation;
+import java.util.Set;
 
 /**
  * Abstract lookup context.
@@ -45,15 +47,16 @@ public abstract class LookupContext implements Context {
     /**
      * Lookup bean by type.
      *
-     * @param clazz the type
+     * @param clazz      the type
+     * @param qualifiers the qualifiers
      * @return bean of type clazz
      */
-    protected <T> T lookup(Class<T> clazz) {
-        InjectionTarget<T> it = manager.createInjectionTarget(manager.createAnnotatedType(clazz));
-        CreationalContext<T> cc = manager.createCreationalContext(null);
-        T result = it.produce(cc);
-        it.inject(result, cc);
-        return result;
+    @SuppressWarnings({"unchecked"})
+    protected <T> T lookup(Class<T> clazz, Annotation... qualifiers) {
+        Set beans = manager.getBeans(clazz, qualifiers);
+        Bean bean = manager.resolve(beans);
+        CreationalContext cc = manager.createCreationalContext(null);
+        return (T) manager.getReference(bean, clazz, cc);
     }
 
     public <T> T get(Contextual<T> contextual) {

@@ -1,1 +1,5 @@
-<beans/>
+<beans>
+    <alternatives>
+        <class>org.jboss.test.seam.scopes.monterey.MockEndpoint</class>
+    </alternatives>
+</beans>

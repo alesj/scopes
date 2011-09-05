@@ -20,32 +20,30 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.seam.scopes.monterey;
+package org.jboss.test.seam.scopes.monterey;
 
-import javax.enterprise.context.NormalScope;
-import javax.enterprise.util.Nonbinding;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.cloudsoftcorp.monterey.servicebean.access.api.MontereyNetworkEndpoint;
+
+import javax.enterprise.inject.Alternative;
+import java.util.concurrent.TimeoutException;
 
 /**
- * Monterey scoped.
- *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@Inherited
-@NormalScope
-@Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface MontereyScoped {
-    /**
-     * Get business interface.
-     * Can be left out, if bean implements single interface.
-     * (all bean class hierarchy is checked)
-     *
-     * @return the business interface
-     */
-    @Nonbinding Class<?> value() default void.class;
+@Alternative
+public class MockEndpoint implements MontereyNetworkEndpoint {
+    public void start() throws TimeoutException {
+    }
+
+    public void shutdown() {
+    }
+
+    public <T> T getService(Class<T> tClass, String s, long l) {
+        final MService service = new MServiceImpl();
+        return (T) new MService() {
+            public double play(String... cards) {
+                return service.play(cards);
+            }
+        };
+    }
 }

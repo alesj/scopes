@@ -30,8 +30,12 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Monterey scoped context.
@@ -68,10 +72,48 @@ public class MontereyScopedContext extends LookupContext {
     public <T> T get(Contextual<T> contextual, CreationalContext<T> creationalContext) {
         if (contextual instanceof Bean<?>) {
             Bean<T> bean = (Bean<T>) contextual;
-            String segment = ""; // TODO
-            return (T) getEndpoint().getService(bean.getBeanClass(), segment, getTimeout());
+            return (T) getEndpoint().getService(getBusinessInterface(bean), getSegment(bean), getTimeout());
         } else {
             throw new IllegalArgumentException("Can only handle beans: " + contextual);
         }
+    }
+
+    protected Class<?> getBusinessInterface(Bean bean) {
+        Class<?> beanClass = bean.getBeanClass();
+        MontereyScoped ms = beanClass.getAnnotation(MontereyScoped.class);
+        if (ms == null)
+            throw new IllegalArgumentException("Missing @MontereyScoped annotation: " + bean);
+
+        Class<?> iface = ms.value();
+        if (iface.equals(void.class) == false)
+            return iface;
+
+        Set<Class<?>> ifaces = new HashSet<Class<?>>();
+        check(beanClass, ifaces);
+
+        if (ifaces.size() == 1)
+            return ifaces.iterator().next();
+
+        throw new IllegalArgumentException("Too many interfaces on a bean: " + bean + ", interfaces: " + ifaces);
+    }
+
+    @SuppressWarnings({"unchecked"})
+    protected String getSegment(Bean bean) {
+        Set<Annotation> qualifiers = bean.getQualifiers();
+        for (Annotation a : qualifiers) {
+            if (a instanceof Named) {
+                Named n = (Named) a;
+                return n.value();
+            }
+        }
+        return "default";
+    }
+
+    private static void check(Class<?> current, Set<Class<?>> ifaces) {
+        if (current == Object.class)
+            return;
+
+        ifaces.addAll(Arrays.asList(current.getInterfaces()));
+        check(current.getSuperclass(), ifaces);
     }
 }

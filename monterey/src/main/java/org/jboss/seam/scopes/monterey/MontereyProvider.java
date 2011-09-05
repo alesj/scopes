@@ -60,7 +60,7 @@ public class MontereyProvider {
 
     static long getTimeout() {
         try {
-            return Long.parseLong(loadProperties(MontereyProvider.class.getClassLoader()).getProperty("timeout", "5000L"));
+            return Long.parseLong(loadProperties(MontereyProvider.class.getClassLoader()).getProperty("timeout", "5000"));
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
